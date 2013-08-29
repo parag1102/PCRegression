@@ -17,6 +17,5 @@ Linear prediction using Linear Regression, PCR and Ridge Regression
       Example: Given the <8 307.0 130.0 3504. 12.0 70 1> attributes, what is the predicted value of mpg?
 
       Divide the dataset into the following training and test sets
-        
         Training: 80%
         Test : 20%
