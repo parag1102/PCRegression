@@ -1,0 +1,16 @@
+pcr_our = function()
+{
+data = read.table("auto-mpg1.data", header=FALSE, sep=",")
+colnames(data) = c("mpg", "cylinders", "displacement", "horsepower", "weight", "acceleration", "modelyear", "origin")
+data.size = dim(data)
+data.split = as.integer(0.8*data.size[1])
+train = data[1:data.split,]
+test = data[(data.split+1):data.size[1],]
+eigenvector=svd(train[,2:8])
+ev=eigenvector$v
+x=as.matrix(test[,2:8])
+tee=x%*%(ev)
+tee.tr=t(tee)
+const = tee%*%solve(tee.tr%*%tee)%*%tee.tr
+y_hat=const%*%test[,1]
+}

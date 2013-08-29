@@ -1,0 +1,17 @@
+data = read.table("auto-mpg1.data", header=FALSE, sep=",")
+colnames(data) = c("mpg", "cylinders", "displacement", "horsepower", "weight", "acceleration", "modelyear", "origin")
+data.size = dim(data)
+data.split = as.integer(0.8*data.size[1])
+train = data[1:data.split,]
+ridge.r = lm.ridge(train[,"mpg"]~train[,"cylinders"]+train[,"displacement"]+train[,"horsepower"]+train[,"weight"]+train[,"acceleration"]+train[,"modelyear"]+train[,"origin"])
+test = data[(data.split+1):data.size[1],]
+eigenvector=svd(train[,2:8])
+ev=eigenvector$v
+x=as.matrix(test[,2:8])
+tee=x%*%(ev)
+tee.tr=t(tee)
+c=tee.tr%*%tee
+lmb=(ridge.r$lambda)*diag(7)
+const = tee%*%solve(c-lmb)%*%tee.tr
+y_hat=const%*%test[,1]
+
